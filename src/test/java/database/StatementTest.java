@@ -1,5 +1,6 @@
 package database;
 
+import app.models.Barang;
 import app.models.User;
 import marvelos.illuminate.DBCollection;
 import org.junit.jupiter.api.Test;
@@ -9,11 +10,11 @@ public class StatementTest {
 
     @Test
     public void queryStatementGetAll() throws SQLException {
-        User user = new User();
-        ResultSet rs = user.all();
+        Barang barang = new Barang();
+        ResultSet rs = barang.all();
         System.out.println("=======NEW COUT YANU=======");
         while(rs.next()) {
-            System.out.println(rs.getString("email"));
+            System.out.println(rs.getString("nama"));
 //            System.out.println(rs.getString("username"));
         }
         System.out.println("=======NEW COUT YANU=======");
