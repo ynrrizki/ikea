@@ -10,12 +10,14 @@ public class StatementTest {
 
     @Test
     public void queryStatementGetAll() throws SQLException {
+        // instansiasikan nama class model
         Barang barang = new Barang();
+        
         ResultSet rs = barang.all();
         System.out.println("=======NEW COUT YANU=======");
         while(rs.next()) {
             System.out.println(rs.getString("nama"));
-//            System.out.println(rs.getString("username"));
+        // System.out.println(rs.getString("username"));
         }
         System.out.println("=======NEW COUT YANU=======");
     }

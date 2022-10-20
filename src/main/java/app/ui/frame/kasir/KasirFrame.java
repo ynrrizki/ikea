@@ -7,6 +7,8 @@ package app.ui.frame.kasir;
 
 import app.models.Barang;
 import app.ui.frame.admin.*;
+import java.sql.ResultSet;
+import marvelos.illuminate.DBCollection;
 
 /**
  *
@@ -14,7 +16,7 @@ import app.ui.frame.admin.*;
  */
 public class KasirFrame extends javax.swing.JFrame {
     
-    Barang barang;
+    private Barang barang;
     /**
      * Creates new form Admin
      */
@@ -34,17 +36,17 @@ public class KasirFrame extends javax.swing.JFrame {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanelTransaksi = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        jButtonKonfirmasi = new javax.swing.JButton();
+        jButtonCancel = new javax.swing.JButton();
+        jTextFieldTotal = new javax.swing.JTextField();
+        jTextFieldBarangKeseluruhan = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        jTableKeranjang = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableBarang = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jPanelRekap = new javax.swing.JPanel();
 
@@ -52,13 +54,17 @@ public class KasirFrame extends javax.swing.JFrame {
 
         jTabbedPane1.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
 
-        jButton1.setText("Konfirmasi");
+        jButtonKonfirmasi.setBackground(new java.awt.Color(51, 102, 255));
+        jButtonKonfirmasi.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonKonfirmasi.setText("Konfirmasi");
 
-        jButton2.setText("Cancel");
+        jButtonCancel.setBackground(new java.awt.Color(255, 204, 102));
+        jButtonCancel.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonCancel.setText("Cancel");
 
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldBarangKeseluruhan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                jTextFieldBarangKeseluruhanActionPerformed(evt);
             }
         });
 
@@ -68,7 +74,7 @@ public class KasirFrame extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Barang Keseluruhan");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        jTableKeranjang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -79,12 +85,12 @@ public class KasirFrame extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(jTableKeranjang);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Keranjang");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableBarang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -95,7 +101,7 @@ public class KasirFrame extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTableBarang);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Daftar Barang");
@@ -115,15 +121,15 @@ public class KasirFrame extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTransaksiLayout.createSequentialGroup()
                         .addGroup(jPanelTransaksiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextFieldBarangKeseluruhan, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanelTransaksiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jTextFieldTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTransaksiLayout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(40, 40, 40)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButtonKonfirmasi, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(56, 56, 56))
         );
         jPanelTransaksiLayout.setVerticalGroup(
@@ -142,16 +148,16 @@ public class KasirFrame extends javax.swing.JFrame {
                     .addGroup(jPanelTransaksiLayout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(11, 11, 11)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextFieldTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelTransaksiLayout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(11, 11, 11)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jTextFieldBarangKeseluruhan, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(35, 35, 35)
                 .addGroup(jPanelTransaksiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(45, Short.MAX_VALUE))
+                    .addComponent(jButtonKonfirmasi, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Transaksi", jPanelTransaksi);
@@ -164,7 +170,7 @@ public class KasirFrame extends javax.swing.JFrame {
         );
         jPanelRekapLayout.setVerticalGroup(
             jPanelRekapLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 737, Short.MAX_VALUE)
+            .addGap(0, 745, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Rekap", jPanelRekap);
@@ -178,17 +184,18 @@ public class KasirFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 44, Short.MAX_VALUE)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 36, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 778, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void jTextFieldBarangKeseluruhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldBarangKeseluruhanActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+        
+    }//GEN-LAST:event_jTextFieldBarangKeseluruhanActionPerformed
 
     /**
      * @param args the command line arguments
@@ -233,8 +240,8 @@ public class KasirFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButtonCancel;
+    private javax.swing.JButton jButtonKonfirmasi;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -244,9 +251,20 @@ public class KasirFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTable jTableBarang;
+    private javax.swing.JTable jTableKeranjang;
+    private javax.swing.JTextField jTextFieldBarangKeseluruhan;
+    private javax.swing.JTextField jTextFieldTotal;
     // End of variables declaration//GEN-END:variables
+
+    public void getAllData() {
+        ResultSet rs = barang.all();
+    }
+    
+    public void saveData() {
+        String[] column = {};
+        String[] value = {};
+        DBCollection query = new DBCollection(column, value);
+        barang.save(query);
+    }
 }

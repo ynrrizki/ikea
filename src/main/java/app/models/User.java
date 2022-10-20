@@ -1,8 +1,8 @@
 package app.models;
 
-import marvelos.illuminate.database.Model;
+import marvelos.illuminate.auth.Authenticatable;
 
-public class User extends Model {
+public class User extends Authenticatable {
     protected String table;
 
     @Override
